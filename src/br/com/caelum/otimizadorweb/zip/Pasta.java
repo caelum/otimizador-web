@@ -47,6 +47,7 @@ public class Pasta {
 				}
 				origem.close();
 			}
+			
 			saida.close();
 			System.out.println("Arquivos compactados com sucesso na pasta " + pastaDestino);
 		} catch (Exception e) {
@@ -71,5 +72,6 @@ public class Pasta {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Pasta temporária " + pasta.getName() + " removida com sucesso.");
 	}
 }

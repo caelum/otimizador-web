@@ -35,7 +35,7 @@ public class Minificador {
 	}
 	
 	public void comprimeListaDeArquivos() throws IOException {
-		List<File> arquivosLocais = this.buscaArquivosLocais();
+		List<File> arquivosLocais = buscador.buscaArquivosLocais();
 		
 		for (File arquivo : arquivosLocais) {
 			for(Compressor compressor:compressores) {
@@ -44,17 +44,5 @@ public class Minificador {
 				}
 			}
 		}
-	}
-
-	private List<File> buscaArquivosLocais() throws IOException {
-		
-		List<File> arquivos = new ArrayList<File>();
-		
-		arquivos.addAll(buscador.buscaArquivosLocaisTerminadosEm(".html"));
-		arquivos.addAll(buscador.buscaArquivosLocaisTerminadosEm(".htm"));
-		arquivos.addAll(buscador.buscaArquivosLocaisTerminadosEm(".css"));
-		arquivos.addAll(buscador.buscaArquivosLocaisTerminadosEm(".js"));
-		
-		return arquivos;
 	}
 }

@@ -15,9 +15,7 @@ public enum Tipo {
 			return file.getName().endsWith(".js");
 		}
 	},
-	HTML
-
-	{
+	HTML {
 		@Override
 		boolean aceita(File file) {
 			return file.getName().endsWith(".html")  || file.getName().endsWith(".htm");
