@@ -30,25 +30,31 @@ public class Empacotador {
 		List<String> temporarios = new ArrayList<String>();
 		
 		for (File file : arquivos) {
-			StringBuffer buffer = new StringBuffer();
-			List<String> lines = Files.readLines(file, Charset.defaultCharset());
+			List<String> nomesDosArquivos = Files.readLines(file, Charset.defaultCharset());
 			
-			for (String line : lines) {
-				File temp = new File(line);
-				buffer.append(new Scanner(temp).useDelimiter("$$").next());
-			}
+			String buffer = insereConteudoDosArquivosNoBuffer(new StringBuffer(), nomesDosArquivos);
 			
 			String nomeDoArquivoTemporario = file.getName().replaceAll(".txt", "");
 			Writer out = new FileWriter(new File(pasta,nomeDoArquivoTemporario));
 			
 			temporarios.add(nomeDoArquivoTemporario);
 			
-			out.write(buffer.toString());
+			out.write(buffer);
 			out.flush();
 		}
 		
 		minificador.comprimeListaDeArquivos();
 		this.removeListaDeArquivos(temporarios);
+	}
+
+	public String insereConteudoDosArquivosNoBuffer(StringBuffer buffer,
+			List<String> nomesDosArquivos) throws IOException {
+		for (String arquivo : nomesDosArquivos) {
+			File temp = new File(arquivo);
+			buffer.append(new Scanner(temp).useDelimiter("$$").next());
+		}
+		
+		return buffer.toString();
 	}
 	
 	private void removeListaDeArquivos(List<String> nomes) {
