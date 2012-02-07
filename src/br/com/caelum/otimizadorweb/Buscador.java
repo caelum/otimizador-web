@@ -6,20 +6,10 @@ import java.util.List;
 
 public class Buscador {
 	
-	private String[] exts;
-
-	public Buscador(String... exts) {
-		this.exts = exts;
-	}
-	
-	public void setExts(String... exts) {
-		this.exts = exts;
-	}
-	
-	public List<File> buscaArquivosLocais() throws IOException {
+	public List<File> buscaArquivosLocaisTerminadosEm(String... exts) throws IOException {
 		
 		List<File> arquivos = new ArrayList<File>();
-		arquivos.addAll(this.buscaRecursiva(".", new ArrayList<File>(), this.exts));
+		arquivos.addAll(this.buscaRecursiva(".", new ArrayList<File>(), exts));
 		return arquivos;
 	}
 	

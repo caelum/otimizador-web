@@ -18,7 +18,7 @@ public class Main {
 		Zipador pasta = new Zipador(temp);
 		pasta.cria();
 
-		Buscador buscador = new Buscador(".html", ".htm", ".css", ".js");
+		Buscador buscador = new Buscador();
 		Minificador minificador = new Minificador(temp, buscador);
 		
 		if(args.length == 0) {

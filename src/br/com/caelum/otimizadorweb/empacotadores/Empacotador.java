@@ -25,8 +25,7 @@ public class Empacotador {
 	}
 	
 	public void geraPackage(String pasta) throws IOException {
-		buscador.setExts(".css.txt",".js.txt");
-		List<File> arquivos = buscador.buscaArquivosLocais();
+		List<File> arquivos = buscador.buscaArquivosLocaisTerminadosEm(".css.txt",".js.txt");
 		List<String> temporarios = new ArrayList<String>();
 		
 		for (File file : arquivos) {
@@ -47,13 +46,11 @@ public class Empacotador {
 		this.removeListaDeArquivos(temporarios);
 	}
 
-	public String insereConteudoDosArquivosNoBuffer(StringBuffer buffer,
-			List<String> nomesDosArquivos) throws IOException {
+	public String insereConteudoDosArquivosNoBuffer(StringBuffer buffer, List<String> nomesDosArquivos) throws IOException {
 		for (String arquivo : nomesDosArquivos) {
 			File temp = new File(arquivo);
 			buffer.append(new Scanner(temp).useDelimiter("$$").next());
 		}
-		
 		return buffer.toString();
 	}
 	
