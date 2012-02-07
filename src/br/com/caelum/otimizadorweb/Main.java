@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.IOException;
 
 import br.com.caelum.otimizadorweb.empacotadores.Empacotador;
-import br.com.caelum.otimizadorweb.zip.Pasta;
+import br.com.caelum.otimizadorweb.zip.Zipador;
 
 public class Main {
 	
@@ -15,10 +15,10 @@ public class Main {
 		String destino = DESTINO;
 		
 		File temp = new File(TEMP);
-		Pasta pasta = new Pasta(temp);
+		Zipador pasta = new Zipador(temp);
 		pasta.cria();
 
-		Buscador buscador = new Buscador();
+		Buscador buscador = new Buscador(".html", ".htm", ".css", ".js");
 		Minificador minificador = new Minificador(temp, buscador);
 		
 		if(args.length == 0) {
@@ -39,5 +39,4 @@ public class Main {
 		pasta.compactarPara(destino);
 		pasta.remove();
 	}
-	
 }

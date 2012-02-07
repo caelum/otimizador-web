@@ -14,7 +14,6 @@ import br.com.caelum.otimizadorweb.Minificador;
 
 import com.google.common.io.Files;
 
-
 public class Empacotador {
 	
 	private final Buscador buscador;
@@ -26,7 +25,8 @@ public class Empacotador {
 	}
 	
 	public void geraPackage(String pasta) throws IOException {
-		List<File> arquivos = buscador.buscaArquivosLocaisTerminadosEm(".css.txt",".js.txt");
+		buscador.setExts(".css.txt",".js.txt");
+		List<File> arquivos = buscador.buscaArquivosLocais();
 		List<String> temporarios = new ArrayList<String>();
 		
 		for (File file : arquivos) {

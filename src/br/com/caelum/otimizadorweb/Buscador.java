@@ -1,43 +1,43 @@
 package br.com.caelum.otimizadorweb;
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Buscador {
 	
+	private String[] exts;
+
+	public Buscador(String... exts) {
+		this.exts = exts;
+	}
+	
+	public void setExts(String... exts) {
+		this.exts = exts;
+	}
+	
 	public List<File> buscaArquivosLocais() throws IOException {
 		
 		List<File> arquivos = new ArrayList<File>();
-		
-		arquivos.addAll(this.buscaArquivosLocaisTerminadosEm(".html", ".htm", ".css", ".js"));
-		
+		arquivos.addAll(this.buscaRecursiva(".", new ArrayList<File>(), this.exts));
 		return arquivos;
 	}
 	
-	public List<File> buscaArquivosLocaisTerminadosEm(final String... exts) throws FileNotFoundException {
+	private List<File> buscaRecursiva(String raiz, List<File> arquivos, String... exts) {
 		
-		ArrayList<File> files = new ArrayList<File>();
+		File[] files = new File(raiz).listFiles();
 		
-		for (String ext : exts) {
-			files.addAll(Arrays.asList(new File(".").listFiles(terminaEm(ext))));
-		
-		}
-		return files;
-	}
-
-	private FileFilter terminaEm(final String ext) {
-		FileFilter filtroDeExtensao = new FileFilter() {
-
-			@Override
-			public boolean accept(File pathname) {
-				return pathname.getName().endsWith(ext);
+		for (File arquivo : files) {
+			if(arquivo.isDirectory()) {
+				buscaRecursiva(raiz + "/" + arquivo.getName() + "/", arquivos, exts);
+			} else {
+				for (String ext : exts) {
+					if(arquivo.getName().endsWith(ext)) {
+						arquivos.add(arquivo);
+					}
+				}
 			}
-		};
-		return filtroDeExtensao;
+		}
+		return arquivos;
 	}
-	
 }

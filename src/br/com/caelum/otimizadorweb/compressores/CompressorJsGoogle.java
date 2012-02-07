@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import br.com.caelum.otimizadorweb.Diretorio;
 import br.com.caelum.otimizadorweb.Tipo;
 
 import com.google.javascript.jscomp.CompilationLevel;
@@ -15,11 +16,11 @@ import com.google.javascript.jscomp.JSSourceFile;
 
 public class CompressorJsGoogle implements Compressor{
 
-	private File pasta;
+	private Diretorio pasta;
 	private Tipo tipo = Tipo.JS;
 
 	public CompressorJsGoogle(File pasta) {
-		this.pasta = pasta;
+		this.pasta = new Diretorio(pasta);
 	}
 	
 	public Tipo getTipo() {
@@ -27,6 +28,9 @@ public class CompressorJsGoogle implements Compressor{
 	}
 	
 	public void comprime(File file) throws IOException {
+
+		File parent = pasta.criaPara(file);
+		
 		Compiler compiler = new Compiler();
 		CompilerOptions options = new CompilerOptions();
 		CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
@@ -35,7 +39,7 @@ public class CompressorJsGoogle implements Compressor{
 		
 		compiler.compile(emptyList, Arrays.asList(JSSourceFile.fromFile(file)), options);
 		
-		FileWriter out = new FileWriter(new File(pasta,"google-compress-" + file.getName()));
+		FileWriter out = new FileWriter(new File(parent,"google-compress-" + file.getName()));
 		out.write(compiler.toSource());
 		out.close();
 	}

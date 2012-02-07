@@ -10,5 +10,5 @@ public interface Compressor {
 	Tipo getTipo();
 	
 	public void comprime(File file) throws IOException;
-
+	
 }
