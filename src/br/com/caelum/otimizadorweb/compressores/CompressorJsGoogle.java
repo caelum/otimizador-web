@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import br.com.caelum.otimizadorweb.Diretorio;
 import br.com.caelum.otimizadorweb.Tipo;
@@ -30,6 +32,8 @@ public class CompressorJsGoogle implements Compressor{
 	public void comprime(File file) throws IOException {
 
 		File parent = pasta.criaPara(file);
+		
+		Logger.getLogger("com.google.javascript.jscomp").setLevel(Level.OFF);
 		
 		Compiler compiler = new Compiler();
 		CompilerOptions options = new CompilerOptions();

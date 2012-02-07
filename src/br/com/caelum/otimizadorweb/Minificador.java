@@ -37,6 +37,8 @@ public class Minificador {
 	public void comprimeListaDeArquivos() throws IOException {
 		List<File> arquivosLocais = buscador.buscaArquivosLocaisTerminadosEm(".html", ".htm", ".css", ".js");
 		
+		System.out.println("Minificando arquivos...");
+		
 		for (File arquivo : arquivosLocais) {
 			for(Compressor compressor:compressores) {
 				if(compressor.getTipo().aceita(arquivo)) {

@@ -6,9 +6,17 @@ import java.util.List;
 
 public class Buscador {
 	
+	private final String temp;
+
+	public Buscador(String temp) {
+		this.temp = temp;
+	}
+
 	public List<File> buscaArquivosLocaisTerminadosEm(String... exts) throws IOException {
-		
 		List<File> arquivos = new ArrayList<File>();
+		
+		System.out.println("Buscando arquivos locais...");
+		
 		arquivos.addAll(this.buscaRecursiva(".", new ArrayList<File>(), exts));
 		return arquivos;
 	}
@@ -18,7 +26,7 @@ public class Buscador {
 		File[] files = new File(raiz).listFiles();
 		
 		for (File arquivo : files) {
-			if(arquivo.isDirectory()) {
+			if(arquivo.isDirectory() && !arquivo.getName().equals(temp)) {
 				buscaRecursiva(raiz + "/" + arquivo.getName() + "/", arquivos, exts);
 			} else {
 				for (String ext : exts) {

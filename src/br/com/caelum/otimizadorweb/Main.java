@@ -8,7 +8,7 @@ import br.com.caelum.otimizadorweb.zip.Zipador;
 public class Main {
 	
 	private static String DESTINO = "projeto-compactado.zip";
-	private static String TEMP = "arquivos_temporarios";
+	private static String TEMP = "projeto";
 
 	public static void main(String[] args) throws IOException {
 		
@@ -18,14 +18,14 @@ public class Main {
 		Zipador pasta = new Zipador(temp);
 		pasta.cria();
 
-		Buscador buscador = new Buscador();
+		Buscador buscador = new Buscador(TEMP);
 		Minificador minificador = new Minificador(temp, buscador);
 		
 		if(args.length == 0) {
 			destino = DESTINO;
 			minificador.comprimeListaDeArquivos();
 		}
-		
+				
 		for (String arg : args) {
 			if(arg.equals("-pack")) {
 				Empacotador empacotador = new Empacotador(buscador, minificador);
