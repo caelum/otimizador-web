@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Scanner;
 
-import br.com.caelum.otimizadorweb.Diretorio;
-import br.com.caelum.otimizadorweb.Tipo;
+import br.com.caelum.otimizadorweb.helpers.Diretorio;
+import br.com.caelum.otimizadorweb.helpers.Tipo;
 
 import com.googlecode.htmlcompressor.compressor.HtmlCompressor;
 

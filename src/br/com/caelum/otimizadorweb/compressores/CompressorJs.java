@@ -8,8 +8,8 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 
-import br.com.caelum.otimizadorweb.Diretorio;
-import br.com.caelum.otimizadorweb.Tipo;
+import br.com.caelum.otimizadorweb.helpers.Diretorio;
+import br.com.caelum.otimizadorweb.helpers.Tipo;
 
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 

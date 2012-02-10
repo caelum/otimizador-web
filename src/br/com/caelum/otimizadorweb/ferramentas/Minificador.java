@@ -1,4 +1,4 @@
-package br.com.caelum.otimizadorweb;
+package br.com.caelum.otimizadorweb.ferramentas;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import br.com.caelum.otimizadorweb.compressores.CompressorCss;
 import br.com.caelum.otimizadorweb.compressores.CompressorHtml;
 import br.com.caelum.otimizadorweb.compressores.CompressorJs;
 import br.com.caelum.otimizadorweb.compressores.CompressorJsGoogle;
+import br.com.caelum.otimizadorweb.helpers.Buscador;
 
 public class Minificador {
 	
@@ -35,7 +36,7 @@ public class Minificador {
 	}
 	
 	public void comprimeListaDeArquivos() throws IOException {
-		List<File> arquivosLocais = buscador.buscaArquivosLocaisTerminadosEm(".html", ".htm", ".css", ".js");
+		List<File> arquivosLocais = buscador.buscaArquivosNaPastaTerminadosEm(".", ".html", ".htm", ".css", ".js");
 		
 		System.out.println("Minificando arquivos...");
 		

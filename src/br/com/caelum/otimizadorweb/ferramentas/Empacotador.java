@@ -1,4 +1,4 @@
-package br.com.caelum.otimizadorweb.empacotadores;
+package br.com.caelum.otimizadorweb.ferramentas;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import br.com.caelum.otimizadorweb.Buscador;
-import br.com.caelum.otimizadorweb.Minificador;
+import br.com.caelum.otimizadorweb.helpers.Buscador;
 
 import com.google.common.io.Files;
 
@@ -25,7 +24,10 @@ public class Empacotador {
 	}
 	
 	public void geraPackage(String pasta) throws IOException {
-		List<File> arquivos = buscador.buscaArquivosLocaisTerminadosEm(".css.txt",".js.txt");
+		
+		System.out.println("Gerando package.css e package.js...");
+		
+		List<File> arquivos = buscador.buscaArquivosNaPastaTerminadosEm(".", ".css.txt",".js.txt");
 		List<String> temporarios = new ArrayList<String>();
 		
 		for (File file : arquivos) {

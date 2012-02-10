@@ -2,8 +2,11 @@ package br.com.caelum.otimizadorweb;
 import java.io.File;
 import java.io.IOException;
 
-import br.com.caelum.otimizadorweb.empacotadores.Empacotador;
-import br.com.caelum.otimizadorweb.zip.Zipador;
+import br.com.caelum.otimizadorweb.ferramentas.Empacotador;
+import br.com.caelum.otimizadorweb.ferramentas.Fingerprinter;
+import br.com.caelum.otimizadorweb.ferramentas.Minificador;
+import br.com.caelum.otimizadorweb.ferramentas.Zipador;
+import br.com.caelum.otimizadorweb.helpers.Buscador;
 
 public class Main {
 	
@@ -25,17 +28,22 @@ public class Main {
 			destino = DESTINO;
 			minificador.comprimeListaDeArquivos();
 		}
-				
+		
 		for (String arg : args) {
 			if(arg.equals("-pack")) {
 				Empacotador empacotador = new Empacotador(buscador, minificador);
 				empacotador.geraPackage(".");
-			} else {
+			} else if(arg.equals("-fingerprint")) {
+				minificador.comprimeListaDeArquivos();
+				Fingerprinter fingerprint = new Fingerprinter(TEMP ,buscador);
+				fingerprint.paraArquivos();
+				destino = fingerprint.para(destino);				
+			} else if(arg.endsWith(".zip")) {
 				destino = arg;
 				minificador.comprimeListaDeArquivos();
 			}
 		}
-		
+
 		pasta.compactarPara(destino);
 		pasta.remove();
 	}

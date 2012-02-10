@@ -1,4 +1,4 @@
-package br.com.caelum.otimizadorweb.zip;
+package br.com.caelum.otimizadorweb.ferramentas;
 
 import java.io.File;
 import java.io.FileInputStream;

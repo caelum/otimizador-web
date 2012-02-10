@@ -2,7 +2,9 @@ package br.com.caelum.otimizadorweb.compressores;
 import java.io.File;
 import java.io.IOException;
 
-import br.com.caelum.otimizadorweb.Tipo;
+import br.com.caelum.otimizadorweb.helpers.Tipo;
+
+
 
 
 public interface Compressor {

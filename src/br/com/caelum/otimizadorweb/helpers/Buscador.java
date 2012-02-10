@@ -1,6 +1,5 @@
-package br.com.caelum.otimizadorweb;
+package br.com.caelum.otimizadorweb.helpers;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +11,12 @@ public class Buscador {
 		this.temp = temp;
 	}
 
-	public List<File> buscaArquivosLocaisTerminadosEm(String... exts) throws IOException {
+	public List<File> buscaArquivosNaPastaTerminadosEm(String caminho, String... exts) {
 		List<File> arquivos = new ArrayList<File>();
 		
 		System.out.println("Buscando arquivos locais...");
 		
-		arquivos.addAll(this.buscaRecursiva(".", new ArrayList<File>(), exts));
+		arquivos.addAll(this.buscaRecursiva(caminho, new ArrayList<File>(), exts));
 		return arquivos;
 	}
 	

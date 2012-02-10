@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import br.com.caelum.otimizadorweb.Diretorio;
-import br.com.caelum.otimizadorweb.Tipo;
+import br.com.caelum.otimizadorweb.helpers.Diretorio;
+import br.com.caelum.otimizadorweb.helpers.Tipo;
 
 import com.google.javascript.jscomp.CompilationLevel;
 import com.google.javascript.jscomp.Compiler;
