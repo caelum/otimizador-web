@@ -14,8 +14,6 @@ public class Buscador {
 	public List<File> buscaArquivosNaPastaTerminadosEm(String caminho, String... exts) {
 		List<File> arquivos = new ArrayList<File>();
 		
-		System.out.println("Buscando arquivos locais...");
-		
 		arquivos.addAll(this.buscaRecursiva(caminho, new ArrayList<File>(), exts));
 		return arquivos;
 	}

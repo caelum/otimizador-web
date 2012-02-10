@@ -1,12 +1,15 @@
 package br.com.caelum.otimizadorweb;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import br.com.caelum.otimizadorweb.ferramentas.Empacotador;
 import br.com.caelum.otimizadorweb.ferramentas.Fingerprinter;
 import br.com.caelum.otimizadorweb.ferramentas.Minificador;
 import br.com.caelum.otimizadorweb.ferramentas.Zipador;
 import br.com.caelum.otimizadorweb.helpers.Buscador;
+
+import com.beust.jcommander.JCommander;
 
 public class Main {
 	
@@ -29,22 +32,58 @@ public class Main {
 			minificador.comprimeListaDeArquivos();
 		}
 		
-		for (String arg : args) {
-			if(arg.equals("-pack")) {
-				Empacotador empacotador = new Empacotador(buscador, minificador);
-				empacotador.geraPackage(".");
-			} else if(arg.equals("-fingerprint")) {
-				minificador.comprimeListaDeArquivos();
-				Fingerprinter fingerprint = new Fingerprinter(TEMP ,buscador);
-				fingerprint.paraArquivos();
-				destino = fingerprint.para(destino);				
-			} else if(arg.endsWith(".zip")) {
-				destino = arg;
+		VerificadorDeParametros parser = new VerificadorDeParametros();
+		JCommander commander = new JCommander(parser, args);
+		
+		if(parser.ajuda()) {
+			commander.usage();
+			return;
+		}
+		
+		geraPackage(buscador, minificador, parser);
+		destino = checaNomeDaPastaDeDestino(destino, minificador, parser);
+		destino = geraFingerprint(destino, buscador, minificador, parser);
+		
+		pasta.compactarPara(destino);
+		pasta.remove();
+	}
+
+	private static String geraFingerprint(String destino, Buscador buscador,
+			Minificador minificador, VerificadorDeParametros parser) throws IOException {
+		if(parser.geraFingerprint()) {
+			minificador.comprimeListaDeArquivos();
+			Fingerprinter fingerprint = new Fingerprinter(TEMP, buscador);
+			fingerprint.paraArquivos();
+			destino = fingerprint.para(destino);
+		}
+		return destino;
+	}
+
+	private static void geraPackage(Buscador buscador, Minificador minificador,
+			VerificadorDeParametros parser) throws IOException {
+		if(parser.geraPackage()) {
+			System.out.println("Gerando package.css e package.js...");
+			
+			Empacotador empacotador = new Empacotador(buscador, minificador);
+			empacotador.geraPackage(".");
+		}
+	}
+
+	private static String checaNomeDaPastaDeDestino(String destino, Minificador minificador,
+			VerificadorDeParametros parser) throws IOException {
+		
+		List<String> arquivos = parser.getArquivos();
+		
+		if(arquivos != null) {
+			String arquivo = arquivos.get(0);
+			if(!arquivo.isEmpty() && arquivo.endsWith(".zip")) {
+				destino = arquivo;
+				
+				System.out.println("Comprimindo para a pasta "+ destino + "...");
+				
 				minificador.comprimeListaDeArquivos();
 			}
 		}
-
-		pasta.compactarPara(destino);
-		pasta.remove();
+		return destino;
 	}
 }

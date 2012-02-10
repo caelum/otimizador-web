@@ -63,7 +63,7 @@ public class Zipador {
 		boolean mkdir = pasta.mkdirs();
 
 		if (mkdir) {
-			System.out.println("Pasta " + pasta + " criada com sucesso.");
+			System.out.println("Pasta temporária criada com sucesso.");
 		} else {
 			System.out.println("Ja existe uma pasta chamada " + pasta + ".");
 		}
@@ -76,6 +76,6 @@ public class Zipador {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Pasta temporária " + pasta.getName() + " removida com sucesso.");
+		System.out.println("Pasta temporária removida com sucesso.");
 	}
 }

@@ -25,8 +25,6 @@ public class Empacotador {
 	
 	public void geraPackage(String pasta) throws IOException {
 		
-		System.out.println("Gerando package.css e package.js...");
-		
 		List<File> arquivos = buscador.buscaArquivosNaPastaTerminadosEm(".", ".css.txt",".js.txt");
 		List<String> temporarios = new ArrayList<String>();
 		
