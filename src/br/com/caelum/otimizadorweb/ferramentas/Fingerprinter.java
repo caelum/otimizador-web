@@ -26,6 +26,11 @@ public class Fingerprinter {
 		}
 	}
 	
+	public String para(String nomeDaPasta) {
+		String[] nome = this.split(nomeDaPasta);
+		return nome[0] + "." + this.paraPasta() + nome[1];
+	}
+	
 	private String[] split(String nomeDoArquivo) {
 		int ultimoPonto = nomeDoArquivo.lastIndexOf(".");
 		
@@ -53,10 +58,5 @@ public class Fingerprinter {
 			}
 		}
 		return modificacaoMaisRecente;
-	}
-	
-	public String para(String pasta) {
-		String[] nome = this.split(pasta);
-		return nome[0] + "." + this.paraPasta() + nome[1];
 	}
 }

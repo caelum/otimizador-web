@@ -8,6 +8,7 @@ import br.com.caelum.otimizadorweb.ferramentas.Fingerprinter;
 import br.com.caelum.otimizadorweb.ferramentas.Minificador;
 import br.com.caelum.otimizadorweb.ferramentas.Zipador;
 import br.com.caelum.otimizadorweb.helpers.Buscador;
+import br.com.caelum.otimizadorweb.helpers.VerificadorDeParametros;
 
 import com.beust.jcommander.JCommander;
 

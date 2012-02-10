@@ -1,4 +1,4 @@
-package br.com.caelum.otimizadorweb;
+package br.com.caelum.otimizadorweb.helpers;
 
 import java.util.List;
 
