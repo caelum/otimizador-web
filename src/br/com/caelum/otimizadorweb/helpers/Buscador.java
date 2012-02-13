@@ -10,7 +10,14 @@ public class Buscador {
 	public Buscador(String temp) {
 		this.temp = temp;
 	}
-
+	
+	public List<File> buscaArquivosTemporariosTerminadosEm(String... exts) {
+		List<File> arquivos = new ArrayList<File>();
+		
+		arquivos.addAll(this.buscaRecursiva("./" + temp, new ArrayList<File>(), exts));
+		return arquivos;
+	}
+	
 	public List<File> buscaArquivosNaPastaTerminadosEm(String caminho, String... exts) {
 		List<File> arquivos = new ArrayList<File>();
 		

@@ -1,6 +1,7 @@
 package br.com.caelum.otimizadorweb.ferramentas;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.caelum.otimizadorweb.helpers.Buscador;
@@ -16,14 +17,20 @@ public class Fingerprinter {
 	}
 	
 	public void paraArquivos() {
-		List<File> arquivos = buscador.buscaArquivosNaPastaTerminadosEm("./" + temp, ".htm", ".css", ".js");
+		List<File> arquivosOriginais = buscador.buscaArquivosNaPastaTerminadosEm("./" + temp, ".htm", ".css", ".js");
+		List<File> fingerprints = new ArrayList<File>();
 		
 		System.out.println("Gerando fingerprint dos arquivos...");
 		
-		for (File file : arquivos) {
-			String[] nome = this.split(file.getName());
-			file.renameTo(new File(file.getParent() + "/" + nome[0] + "." + file.lastModified() + nome[1]));
+		for (File arquivo : arquivosOriginais) {
+			String[] nome = this.split(arquivo.getName());
+			File arquivoComFingerprint = new File(arquivo.getParent() + "/" + nome[0] + "." + arquivo.lastModified() + nome[1]);
+			arquivo.renameTo(arquivoComFingerprint);
+			fingerprints.add(arquivoComFingerprint);
 		}
+		
+		Renomeador renomeador = new Renomeador(buscador, fingerprints);
+		renomeador.renomeia();
 	}
 	
 	public String para(String nomeDaPasta) {
