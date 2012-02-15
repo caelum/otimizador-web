@@ -23,25 +23,23 @@ public class Renomeador {
 	}
 	
 	public void renomeia() {
-		List<File> htmls = buscador.buscaArquivosTemporariosTerminadosEm(".html",".htm",".js");
+		List<File> htmls = buscador.buscaArquivosTemporariosTerminadosEm(".html",".htm",".js", ".css");
 		this.alteraReferenciasDosCss(htmls);
 		this.alteraReferenciasDosJs(htmls);
 	}
 
 	private void alteraReferenciasDosCss(List<File> arquivos) {
-		Pattern regex = Pattern.compile("<link.*?href=\"(.*?).css\".*?(/>|></link>)");
-		
+		Pattern regex = Pattern.compile("(?:url\\(|<link.*?href=\")(.*?)\\.css");
 		this.alteraReferencias(arquivos, regex, ".css");
 	}
 	
 	private void alteraReferenciasDosJs(List<File> arquivos) {
-		Pattern regex = Pattern.compile("<script.*?src=\"(.*?).js\".*?(/>|></script>)");
-		
+		Pattern regex = Pattern.compile("(?:\\.script\\(|src=)\"(.*?)\\.js");
 		this.alteraReferencias(arquivos, regex, ".js");
 	}
 	
 	private void alteraReferencias(List<File> arquivos, Pattern regex, String extensao) {
-		System.out.println("Alterando referencias dos arquivos...");
+		System.out.println("Alterando referencias dos arquivos " + extensao + "...");
 		
 		for (File original : arquivos) {
 			String buffer = enviaArquivoParaBuffer(original);
@@ -54,23 +52,28 @@ public class Renomeador {
 		Matcher matcher = regex.matcher(buffer);
 		
 		while (matcher.find()) {
-			String referenciaCssOriginal = matcher.group(1);
-			buffer = atualizaBuffer(original, buffer, referenciaCssOriginal, extensao);
+			String referenciaOriginal = matcher.group(1);
+			buffer = atualizaBuffer(original, buffer, referenciaOriginal, extensao);
 			atualizaArquivo(original, buffer);
 		}
 	}
 
-	private String atualizaBuffer(File original, String buffer,	String referenciaCssOriginal, String extensao) {
+	private String atualizaBuffer(File original, String buffer,	String referenciaOriginal, String extensao) {
+		Pattern pattern = Pattern.compile(referenciaOriginal + "\\.");
 		
 		for (File fingerprint : fingerprints) {
 			String nomeDoFingerprint = fingerprint.getParentFile().getName() + "/" + fingerprint.getName();
-			Pattern pattern = Pattern.compile(referenciaCssOriginal + "\\.");
-			
-			Matcher matcher = pattern.matcher(nomeDoFingerprint);
-			
-			if(matcher.find()) {
-				buffer = buffer.replaceAll(referenciaCssOriginal + extensao, nomeDoFingerprint);
-			}
+			buffer = tentaEncontrarCorrespondencia(buffer, referenciaOriginal, extensao, pattern, fingerprint, fingerprint.getName());
+			buffer = tentaEncontrarCorrespondencia(buffer, referenciaOriginal, extensao, pattern, fingerprint, nomeDoFingerprint);
+		}
+		return buffer;
+	}
+
+	private String tentaEncontrarCorrespondencia(String buffer, String referenciaOriginal, 
+			String extensao, Pattern pattern, File fingerprint, String nomeDoFingerprint) {
+		Matcher matcher = pattern.matcher(nomeDoFingerprint);
+		if(matcher.find()) {
+			buffer = buffer.replaceAll(referenciaOriginal + extensao, nomeDoFingerprint);
 		}
 		return buffer;
 	}
