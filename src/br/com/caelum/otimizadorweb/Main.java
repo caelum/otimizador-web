@@ -7,6 +7,7 @@ import br.com.caelum.otimizadorweb.ferramentas.Empacotador;
 import br.com.caelum.otimizadorweb.ferramentas.Fingerprinter;
 import br.com.caelum.otimizadorweb.ferramentas.ManipuladorDeImagens;
 import br.com.caelum.otimizadorweb.ferramentas.Minificador;
+import br.com.caelum.otimizadorweb.ferramentas.Renomeador;
 import br.com.caelum.otimizadorweb.ferramentas.Zipador;
 import br.com.caelum.otimizadorweb.helpers.Buscador;
 import br.com.caelum.otimizadorweb.helpers.VerificadorDeParametros;
@@ -70,6 +71,8 @@ public class Main {
 			
 			Empacotador empacotador = new Empacotador(buscador, minificador);
 			empacotador.geraPackage(".");
+			
+			new Renomeador(buscador, null).renomeiaComPackage();
 		}
 	}
 

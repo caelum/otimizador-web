@@ -17,7 +17,7 @@ public class Fingerprinter {
 	}
 	
 	public void paraArquivos() {
-		List<File> arquivosOriginais = buscador.buscaArquivosNaPastaTerminadosEm("./" + temp, ".htm", ".css", ".js");
+		List<File> arquivosOriginais = buscador.buscaArquivosNaPastaTerminadosEm("./" + temp, ".css", ".js");
 		List<File> fingerprints = new ArrayList<File>();
 		
 		System.out.println("Gerando fingerprint dos arquivos...");

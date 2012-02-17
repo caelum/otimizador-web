@@ -23,28 +23,57 @@ public class Renomeador {
 	}
 	
 	public void renomeia() {
-		List<File> htmls = buscador.buscaArquivosTemporariosTerminadosEm(".html",".htm",".js", ".css");
-		this.alteraReferenciasDosCss(htmls);
-		this.alteraReferenciasDosJs(htmls);
+		List<File> arquivos = buscador.buscaArquivosTemporariosTerminadosEm(".html",".htm",".js", ".css");
+		
+		String regexCss = "(?:url\\(|<link.*?href=\")(.*?)\\.css";
+		String regexJs = "(?:\\.script\\(|src=)\"(.*?)\\.js";
+		
+		this.alteraReferencias(arquivos,regexCss,".css");
+		this.alteraReferencias(arquivos,regexJs,".js");
 	}
+	
+	public void renomeiaComPackage() {
+		List<File> arquivos = buscador.buscaArquivosTemporariosTerminadosEm(".html",".htm",".js", ".css");
 
-	private void alteraReferenciasDosCss(List<File> arquivos) {
-		Pattern regex = Pattern.compile("(?:url\\(|<link.*?href=\")(.*?)\\.css");
-		this.alteraReferencias(arquivos, regex, ".css");
+		String regexCss = "(?:url\\(|<link.*?href=\")(.*)\\.css";
+		String regexJs = "src=\"(.*)\\.js";
+		
+		Pattern js = Pattern.compile(regexJs);
+		Pattern css = Pattern.compile(regexCss);
+		
+		for (File file : arquivos) {
+			String buffer = enviaArquivoParaBuffer(file);
+			buffer = renomeiaOcorrencia(buffer, js.matcher(buffer));
+			buffer = renomeiaOcorrencia(buffer, css.matcher(buffer));
+			reescreveArquivo(file, buffer);
+		}
 	}
 	
-	private void alteraReferenciasDosJs(List<File> arquivos) {
-		Pattern regex = Pattern.compile("(?:\\.script\\(|src=)\"(.*?)\\.js");
-		this.alteraReferencias(arquivos, regex, ".js");
+	private String renomeiaOcorrencia(String buffer, Matcher jsMatcher) {
+		while(jsMatcher.find()) {
+			buffer = buffer.replaceAll(jsMatcher.group(1), "package");
+		}
+		return buffer;
 	}
 	
-	private void alteraReferencias(List<File> arquivos, Pattern regex, String extensao) {
+	private void alteraReferencias(List<File> arquivos, String regex, String extensao) {
+		Pattern pattern = Pattern.compile(regex);
 		System.out.println("Alterando referencias dos arquivos " + extensao + "...");
 		
 		for (File original : arquivos) {
 			String buffer = enviaArquivoParaBuffer(original);
-			buscaPadrao(regex, original, buffer, extensao);
+			buscaPadrao(pattern, original, buffer, extensao);
 		}
+	}
+	
+	private String enviaArquivoParaBuffer(File original) {
+		String buffer = "";
+		try {
+			buffer += new Scanner(original).useDelimiter("$$").next();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return buffer;
 	}
 
 	private void buscaPadrao(Pattern regex, File original, String buffer, String extensao) {
@@ -78,21 +107,11 @@ public class Renomeador {
 		return buffer;
 	}
 
-	private String enviaArquivoParaBuffer(File original) {
-		String buffer = "";
-		try {
-			buffer += new Scanner(original).useDelimiter("$$").next();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return buffer;
-	}
-
-	private void reescreveArquivo(File original, String builder) {
+	private void reescreveArquivo(File original, String buffer) {
 		try {
 			FileWriter out = new FileWriter(original.getPath());
 			BufferedWriter writer = new BufferedWriter(out);
-			writer.write(builder);
+			writer.write(buffer);
 			writer.close();
 			out.close();
 		} catch (IOException e) {
