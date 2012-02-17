@@ -54,7 +54,7 @@ public class Renomeador {
 		while (matcher.find()) {
 			String referenciaOriginal = matcher.group(1);
 			buffer = atualizaBuffer(original, buffer, referenciaOriginal, extensao);
-			atualizaArquivo(original, buffer);
+			reescreveArquivo(original, buffer);
 		}
 	}
 
@@ -63,13 +63,13 @@ public class Renomeador {
 		
 		for (File fingerprint : fingerprints) {
 			String nomeDoFingerprint = fingerprint.getParentFile().getName() + "/" + fingerprint.getName();
-			buffer = tentaEncontrarCorrespondencia(buffer, referenciaOriginal, extensao, pattern, fingerprint, fingerprint.getName());
-			buffer = tentaEncontrarCorrespondencia(buffer, referenciaOriginal, extensao, pattern, fingerprint, nomeDoFingerprint);
+			buffer = procuraCorrespondencia(buffer, referenciaOriginal, extensao, pattern, fingerprint, fingerprint.getName());
+			buffer = procuraCorrespondencia(buffer, referenciaOriginal, extensao, pattern, fingerprint, nomeDoFingerprint);
 		}
 		return buffer;
 	}
 
-	private String tentaEncontrarCorrespondencia(String buffer, String referenciaOriginal, 
+	private String procuraCorrespondencia(String buffer, String referenciaOriginal, 
 			String extensao, Pattern pattern, File fingerprint, String nomeDoFingerprint) {
 		Matcher matcher = pattern.matcher(nomeDoFingerprint);
 		if(matcher.find()) {
@@ -88,7 +88,7 @@ public class Renomeador {
 		return buffer;
 	}
 
-	private void atualizaArquivo(File original, String builder) {
+	private void reescreveArquivo(File original, String builder) {
 		try {
 			FileWriter out = new FileWriter(original.getPath());
 			BufferedWriter writer = new BufferedWriter(out);
