@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.caelum.otimizadorweb.ferramentas.Empacotador;
 import br.com.caelum.otimizadorweb.ferramentas.Fingerprinter;
+import br.com.caelum.otimizadorweb.ferramentas.ManipuladorDeImagens;
 import br.com.caelum.otimizadorweb.ferramentas.Minificador;
 import br.com.caelum.otimizadorweb.ferramentas.Zipador;
 import br.com.caelum.otimizadorweb.helpers.Buscador;
@@ -44,6 +45,8 @@ public class Main {
 		geraPackage(buscador, minificador, parser);
 		destino = checaNomeDaPastaDeDestino(destino, minificador, parser);
 		destino = geraFingerprint(destino, buscador, minificador, parser);
+		ManipuladorDeImagens manipuladorDeImagens = new ManipuladorDeImagens(buscador, temp);
+		manipuladorDeImagens.copiaImagens();
 		
 		pasta.compactarPara(destino);
 		pasta.remove();
