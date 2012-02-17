@@ -8,7 +8,6 @@ import br.com.caelum.otimizadorweb.compressores.Compressor;
 import br.com.caelum.otimizadorweb.compressores.CompressorCss;
 import br.com.caelum.otimizadorweb.compressores.CompressorHtml;
 import br.com.caelum.otimizadorweb.compressores.CompressorJs;
-import br.com.caelum.otimizadorweb.compressores.CompressorJsGoogle;
 import br.com.caelum.otimizadorweb.helpers.Buscador;
 
 public class Minificador {
@@ -30,7 +29,7 @@ public class Minificador {
 		compressores.add(new CompressorCss(pasta));
 		compressores.add(new CompressorHtml(pasta));
 		compressores.add(new CompressorJs(pasta));
-		compressores.add(new CompressorJsGoogle(pasta));
+//		compressores.add(new CompressorJsGoogle(pasta));
 		
 		return compressores;
 	}
