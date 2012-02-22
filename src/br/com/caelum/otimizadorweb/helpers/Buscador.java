@@ -5,17 +5,14 @@ import java.util.List;
 
 public class Buscador {
 	
-	private final String temp;
+	private final String pastaTemporaria;
 
-	public Buscador(String temp) {
-		this.temp = temp;
+	public Buscador(String pasta) {
+		this.pastaTemporaria = pasta;
 	}
 	
 	public List<File> buscaArquivosTemporariosTerminadosEm(String... exts) {
-		List<File> arquivos = new ArrayList<File>();
-		
-		arquivos.addAll(this.buscaRecursiva("./" + temp, new ArrayList<File>(), exts));
-		return arquivos;
+		return buscaArquivosNaPastaTerminadosEm("./" + pastaTemporaria, exts);
 	}
 	
 	public List<File> buscaArquivosNaPastaTerminadosEm(String caminho, String... exts) {
@@ -30,7 +27,7 @@ public class Buscador {
 		File[] files = new File(raiz).listFiles();
 		
 		for (File arquivo : files) {
-			if(arquivo.isDirectory() && !arquivo.getName().equals(temp)) {
+			if(arquivo.isDirectory() && !arquivo.getName().equals(pastaTemporaria)) {
 				buscaRecursiva(raiz + "/" + arquivo.getName() + "/", arquivos, exts);
 			} else {
 				for (String ext : exts) {

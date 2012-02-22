@@ -34,7 +34,7 @@ public class Minificador {
 		return compressores;
 	}
 	
-	public void comprimeListaDeArquivos() throws IOException {
+	public void minificaListaDeArquivos() throws IOException {
 		List<File> arquivosLocais = buscador.buscaArquivosNaPastaTerminadosEm(".", ".html", ".htm", ".css", ".js");
 		
 		for (File arquivo : arquivosLocais) {

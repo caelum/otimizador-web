@@ -32,7 +32,7 @@ public class Main {
 		
 		if(args.length == 0) {
 			destino = DESTINO;
-			minificador.comprimeListaDeArquivos();
+			minificador.minificaListaDeArquivos();
 		}
 		
 		VerificadorDeParametros parser = new VerificadorDeParametros();
@@ -52,28 +52,28 @@ public class Main {
 		pasta.compactarPara(destino);
 		pasta.remove();
 	}
-
-	private static String geraFingerprint(String destino, Buscador buscador,
-			Minificador minificador, VerificadorDeParametros parser) throws IOException {
-		if(parser.geraFingerprint()) {
-			minificador.comprimeListaDeArquivos();
-			Fingerprinter fingerprint = new Fingerprinter(TEMP, buscador);
-			fingerprint.paraArquivos();
-			destino = fingerprint.para(destino);
-		}
-		return destino;
-	}
-
+	
 	private static void geraPackage(Buscador buscador, Minificador minificador,
 			VerificadorDeParametros parser) throws IOException {
 		if(parser.geraPackage()) {
 			System.out.println("Gerando package.css e package.js...");
 			
 			Empacotador empacotador = new Empacotador(buscador, minificador);
-			empacotador.geraPackage(".");
+			empacotador.geraPackageDoConteudoDaPasta(".");
 			
-			new Renomeador(buscador, null).renomeiaComPackage();
+			new Renomeador(buscador, null).renomeiaPackage();
 		}
+	}
+
+	private static String geraFingerprint(String destino, Buscador buscador,
+			Minificador minificador, VerificadorDeParametros parser) throws IOException {
+		if(parser.geraFingerprint()) {
+			minificador.minificaListaDeArquivos();
+			Fingerprinter fingerprint = new Fingerprinter(buscador);
+			fingerprint.paraArquivos();
+			destino = fingerprint.para(destino);
+		}
+		return destino;
 	}
 
 	private static String checaNomeDaPastaDeDestino(String destino, Minificador minificador,
@@ -88,7 +88,7 @@ public class Main {
 				
 				System.out.println("Comprimindo para a pasta "+ destino + "...");
 				
-				minificador.comprimeListaDeArquivos();
+				minificador.minificaListaDeArquivos();
 			}
 		}
 		return destino;

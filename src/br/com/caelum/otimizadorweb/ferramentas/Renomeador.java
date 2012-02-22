@@ -32,7 +32,7 @@ public class Renomeador {
 		this.alteraReferencias(arquivos,regexJs,".js");
 	}
 	
-	public void renomeiaComPackage() {
+	public void renomeiaPackage() {
 		List<File> arquivos = buscador.buscaArquivosTemporariosTerminadosEm(".html",".htm",".js", ".css");
 
 		String regexCss = "(?:url\\(|<link.*?href=\")(.*)\\.css";

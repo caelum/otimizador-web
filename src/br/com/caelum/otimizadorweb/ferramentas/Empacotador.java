@@ -23,9 +23,9 @@ public class Empacotador {
 		this.minificador = minificador;
 	}
 	
-	public void geraPackage(String pasta) throws IOException {
+	public void geraPackageDoConteudoDaPasta(String pasta) throws IOException {
 		
-		List<File> arquivos = buscador.buscaArquivosNaPastaTerminadosEm(".", ".css.txt",".js.txt");
+		List<File> arquivos = buscador.buscaArquivosNaPastaTerminadosEm(pasta, ".css.txt",".js.txt");
 		List<String> temporarios = new ArrayList<String>();
 		
 		for (File file : arquivos) {
@@ -34,7 +34,7 @@ public class Empacotador {
 			String buffer = insereConteudoDosArquivosNoBuffer(new StringBuffer(), nomesDosArquivos);
 			
 			String nomeDoArquivoTemporario = file.getName().replaceAll(".txt", "");
-			Writer out = new FileWriter(new File(pasta,nomeDoArquivoTemporario));
+			Writer out = new FileWriter(new File(pasta, nomeDoArquivoTemporario));
 			
 			temporarios.add(nomeDoArquivoTemporario);
 			
@@ -42,11 +42,11 @@ public class Empacotador {
 			out.flush();
 		}
 		
-		minificador.comprimeListaDeArquivos();
+		minificador.minificaListaDeArquivos();
 		this.removeListaDeArquivos(temporarios);
 	}
 
-	public String insereConteudoDosArquivosNoBuffer(StringBuffer buffer, List<String> nomesDosArquivos) throws IOException {
+	private String insereConteudoDosArquivosNoBuffer(StringBuffer buffer, List<String> nomesDosArquivos) throws IOException {
 		for (String arquivo : nomesDosArquivos) {
 			File temp = new File(arquivo);
 			buffer.append(new Scanner(temp).useDelimiter("$$").next());

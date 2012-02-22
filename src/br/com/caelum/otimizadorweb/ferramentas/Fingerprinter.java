@@ -9,15 +9,13 @@ import br.com.caelum.otimizadorweb.helpers.Buscador;
 public class Fingerprinter {
 
 	private final Buscador buscador;
-	private String temp;
 
-	public Fingerprinter(String temp, Buscador buscador) {
-		this.temp = temp;
+	public Fingerprinter(Buscador buscador) {
 		this.buscador = buscador;
 	}
 	
 	public void paraArquivos() {
-		List<File> arquivosOriginais = buscador.buscaArquivosNaPastaTerminadosEm("./" + temp, ".css", ".js");
+		List<File> arquivosOriginais = buscador.buscaArquivosTemporariosTerminadosEm(".css", ".js");
 		List<File> fingerprints = new ArrayList<File>();
 		
 		System.out.println("Gerando fingerprint dos arquivos...");
@@ -52,7 +50,7 @@ public class Fingerprinter {
 	}
 	
 	private long paraPasta() {
-		List<File> arquivos = buscador.buscaArquivosNaPastaTerminadosEm("./" + temp, ".htm", ".css", ".js");
+		List<File> arquivos = buscador.buscaArquivosTemporariosTerminadosEm(".css", ".js");
 		
 		System.out.println("Gerando fingerprint para o zip...");
 		
