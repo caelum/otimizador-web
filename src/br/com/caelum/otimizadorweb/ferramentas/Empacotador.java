@@ -18,15 +18,16 @@ public class Empacotador {
 	private final Buscador buscador;
 	private final Minificador minificador;
 
-	public Empacotador(Buscador buscador, Minificador minificador) {
-		this.buscador = buscador;
+	public Empacotador(Minificador minificador) {
+		this.buscador = new Buscador(".");
 		this.minificador = minificador;
 	}
 	
-	public void geraPackageDoConteudoDaPasta(String pasta) throws IOException {
+	public void geraPackage() throws IOException {
 		
-		List<File> arquivos = buscador.buscaArquivosNaPastaTerminadosEm(pasta, ".css.txt",".js.txt");
+		List<File> arquivos = buscador.buscaEmSubpastasArquivosTerminadosEm(".css.txt",".js.txt");
 		List<String> temporarios = new ArrayList<String>();
+		List<File> packages = new ArrayList<File>();
 		
 		for (File file : arquivos) {
 			List<String> nomesDosArquivos = Files.readLines(file, Charset.defaultCharset());
@@ -34,15 +35,18 @@ public class Empacotador {
 			String buffer = insereConteudoDosArquivosNoBuffer(new StringBuffer(), nomesDosArquivos);
 			
 			String nomeDoArquivoTemporario = file.getName().replaceAll(".txt", "");
-			Writer out = new FileWriter(new File(pasta, nomeDoArquivoTemporario));
+			File pack = new File(".", nomeDoArquivoTemporario);
+			Writer out = new FileWriter(pack);
 			
 			temporarios.add(nomeDoArquivoTemporario);
 			
 			out.write(buffer);
 			out.flush();
+			
+			packages.add(pack);
 		}
 		
-		minificador.minificaListaDeArquivos();
+		minificador.minificaLista(buscador.buscaLocalmenteArquivosTerminadosEm(".html", ".htm", ".css", ".js"));
 		this.removeListaDeArquivos(temporarios);
 	}
 

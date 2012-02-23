@@ -15,7 +15,7 @@ public class Fingerprinter {
 	}
 	
 	public void paraArquivos() {
-		List<File> arquivosOriginais = buscador.buscaArquivosTemporariosTerminadosEm(".css", ".js");
+		List<File> arquivosOriginais = buscador.buscaEmSubpastasArquivosTerminadosEm(".css", ".js");
 		List<File> fingerprints = new ArrayList<File>();
 		
 		System.out.println("Gerando fingerprint dos arquivos...");
@@ -50,7 +50,7 @@ public class Fingerprinter {
 	}
 	
 	private long paraPasta() {
-		List<File> arquivos = buscador.buscaArquivosTemporariosTerminadosEm(".css", ".js");
+		List<File> arquivos = buscador.buscaEmSubpastasArquivosTerminadosEm(".css", ".js");
 		
 		System.out.println("Gerando fingerprint para o zip...");
 		

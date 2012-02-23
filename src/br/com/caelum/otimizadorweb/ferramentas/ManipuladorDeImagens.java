@@ -14,13 +14,13 @@ public class ManipuladorDeImagens {
 	private final Buscador buscador;
 	private File pastaTemporaria;
 
-	public ManipuladorDeImagens(Buscador buscador, File pastaTemporaria) {
-		this.buscador = buscador;
+	public ManipuladorDeImagens(File pastaTemporaria) {
+		this.buscador = new Buscador("./img");
 		this.pastaTemporaria = pastaTemporaria;
 	}
 	
 	public void copiaImagens() {
-		List<File> imagens = buscador.buscaArquivosNaPastaTerminadosEm("./img", ".jpg", ".jpeg", ".gif", ".png");
+		List<File> imagens = buscador.buscaEmSubpastasArquivosTerminadosEm(".jpg", ".jpeg", ".gif", ".png");
 		Diretorio diretorio = new Diretorio(pastaTemporaria);
 		for (File imagem : imagens) {
 			File path = diretorio.criaPara(imagem);

@@ -23,7 +23,7 @@ public class Renomeador {
 	}
 	
 	public void renomeia() {
-		List<File> arquivos = buscador.buscaArquivosTemporariosTerminadosEm(".html",".htm",".js", ".css");
+		List<File> arquivos = buscador.buscaEmSubpastasArquivosTerminadosEm(".html",".htm",".js", ".css");
 		
 		String regexCss = "(?:url\\(|<link.*?href=\")(.*?)\\.css";
 		String regexJs = "(?:\\.script\\(|src=)\"(.*?)\\.js";
@@ -33,7 +33,7 @@ public class Renomeador {
 	}
 	
 	public void renomeiaPackage() {
-		List<File> arquivos = buscador.buscaArquivosTemporariosTerminadosEm(".html",".htm",".js", ".css");
+		List<File> arquivos = buscador.buscaEmSubpastasArquivosTerminadosEm(".html",".htm",".js", ".css");
 
 		String regexCss = "(?:url\\(|<link.*?href=\")(.*)\\.css";
 		String regexJs = "src=\"(.*)\\.js";

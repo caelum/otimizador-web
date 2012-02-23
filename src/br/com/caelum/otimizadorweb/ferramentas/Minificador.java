@@ -16,11 +16,11 @@ public class Minificador {
 	private final Buscador buscador;
 	private List<Compressor> compressores;
 
-	public Minificador(File temp, Buscador buscador) {
+	public Minificador(File temp) {
 		this.pasta = temp;
-		this.buscador = buscador;
+		this.buscador = new Buscador(".");
 		
-		compressores = this.inicializaCompressores();
+		this.compressores = this.inicializaCompressores();
 	}
 
 	private List<Compressor> inicializaCompressores() {
@@ -34,13 +34,20 @@ public class Minificador {
 		return compressores;
 	}
 	
-	public void minificaListaDeArquivos() throws IOException {
-		List<File> arquivosLocais = buscador.buscaArquivosNaPastaTerminadosEm(".", ".html", ".htm", ".css", ".js");
-		
-		for (File arquivo : arquivosLocais) {
+	public void minifica() {
+		List<File> arquivos = buscador.buscaEmSubpastasArquivosTerminadosEm(".html", ".htm", ".css", ".js");
+		minificaLista(arquivos);
+	}
+	
+	public void minificaLista(List<File> arquivos) {
+		for (File arquivo : arquivos) {
 			for(Compressor compressor:compressores) {
 				if(compressor.getTipo().aceita(arquivo)) {
-					compressor.comprime(arquivo);
+					try {
+						compressor.comprime(arquivo);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
