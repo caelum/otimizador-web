@@ -8,13 +8,15 @@ import br.com.caelum.otimizadorweb.helpers.Buscador;
 
 public class Fingerprinter {
 
+	private final String pasta;
 	private final Buscador buscador;
 
-	public Fingerprinter(Buscador buscador) {
-		this.buscador = buscador;
+	public Fingerprinter(String pasta) {
+		this.pasta = pasta;
+		this.buscador = new Buscador(pasta);
 	}
 	
-	public void paraArquivos() {
+	public List<File> paraArquivos() {
 		List<File> arquivosOriginais = buscador.buscaEmSubpastasArquivosTerminadosEm(".css", ".js");
 		List<File> fingerprints = new ArrayList<File>();
 		
@@ -27,8 +29,8 @@ public class Fingerprinter {
 			fingerprints.add(arquivoComFingerprint);
 		}
 		
-		Renomeador renomeador = new Renomeador(buscador, fingerprints);
-		renomeador.renomeia();
+		new Renomeador(pasta, fingerprints).renomeia();
+		return fingerprints;
 	}
 	
 	public String para(String nomeDaPasta) {

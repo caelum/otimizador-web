@@ -18,12 +18,12 @@ public class Empacotador {
 	private final Buscador buscador;
 	private final Minificador minificador;
 
-	public Empacotador(Minificador minificador) {
-		this.buscador = new Buscador(".");
+	public Empacotador(Minificador minificador, String pasta) {
+		this.buscador = new Buscador(pasta);
 		this.minificador = minificador;
 	}
 	
-	public void geraPackage() throws IOException {
+	public void gera() throws IOException {
 		
 		List<File> arquivos = buscador.buscaEmSubpastasArquivosTerminadosEm(".css.txt",".js.txt");
 		List<String> temporarios = new ArrayList<String>();

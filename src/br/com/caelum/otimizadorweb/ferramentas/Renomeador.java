@@ -16,9 +16,14 @@ public class Renomeador {
 
 	private final Buscador buscador;
 	private final List<File> fingerprints;
+	
+	public Renomeador(String pasta) {
+		this.buscador = new Buscador(pasta);
+		this.fingerprints = null;
+	}
 
-	public Renomeador(Buscador buscador, List<File> fingerprints) {
-		this.buscador = buscador;
+	public Renomeador(String pasta, List<File> fingerprints) {
+		this.buscador = new Buscador(pasta);
 		this.fingerprints = fingerprints;
 	}
 	
@@ -34,7 +39,7 @@ public class Renomeador {
 	
 	public void renomeiaPackage() {
 		List<File> arquivos = buscador.buscaEmSubpastasArquivosTerminadosEm(".html",".htm",".js", ".css");
-
+		
 		String regexCss = "(?:url\\(|<link.*?href=\")(.*)\\.css";
 		String regexJs = "src=\"(.*)\\.js";
 		
@@ -43,15 +48,21 @@ public class Renomeador {
 		
 		for (File file : arquivos) {
 			String buffer = enviaArquivoParaBuffer(file);
-			buffer = renomeiaOcorrencia(buffer, js.matcher(buffer));
-			buffer = renomeiaOcorrencia(buffer, css.matcher(buffer));
+			buffer = renomeiaOcorrencia(buffer, js.matcher(buffer), ".js");
+			buffer = renomeiaOcorrencia(buffer, css.matcher(buffer), ".css");
 			reescreveArquivo(file, buffer);
 		}
 	}
 	
-	private String renomeiaOcorrencia(String buffer, Matcher jsMatcher) {
-		while(jsMatcher.find()) {
-			buffer = buffer.replaceAll(jsMatcher.group(1), "package");
+	private String renomeiaOcorrencia(String buffer, Matcher matcher, String extensao) {
+		while(matcher.find()) {
+			for (File fingerprint : fingerprints) {
+				String nome = fingerprint.getName();
+				if(nome.endsWith(extensao)) {
+					nome = nome.replace(extensao, "");
+					buffer = buffer.replaceAll(matcher.group(1), nome);
+				}
+			}
 		}
 		return buffer;
 	}

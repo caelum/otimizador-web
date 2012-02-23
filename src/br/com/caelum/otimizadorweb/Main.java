@@ -27,7 +27,7 @@ public class Main {
 		Zipador pasta = new Zipador(temp);
 		pasta.cria();
 
-		Buscador buscador = new Buscador(TEMP);
+		Buscador buscadorTemp = new Buscador(TEMP);
 		Minificador minificador = new Minificador(temp);
 		
 		if(args.length == 0) {
@@ -43,42 +43,40 @@ public class Main {
 			return;
 		}
 		
-		geraPackage(buscador, minificador, parser);
+		geraPackage(minificador, parser);
 		destino = checaNomeDaPastaDeDestino(destino, minificador, parser);
-		destino = geraFingerprint(destino, buscador, minificador, parser);
+		destino = geraFingerprint(destino, TEMP, minificador, parser);
+		
 		ManipuladorDeImagens manipuladorDeImagens = new ManipuladorDeImagens(temp);
 		manipuladorDeImagens.copiaImagens();
 		
 		pasta.compactarPara(destino);
 		pasta.remove();
 	}
-	
-	private static void geraPackage(Buscador buscador, Minificador minificador,
-			VerificadorDeParametros parser) throws IOException {
+
+	private static void geraPackage(Minificador minificador, VerificadorDeParametros parser) throws IOException {
 		if(parser.geraPackage()) {
 			System.out.println("Gerando package.css e package.js...");
-			
-			Empacotador empacotador = new Empacotador(minificador);
-			empacotador.geraPackage();
-			
-			new Renomeador(buscador, null).renomeiaPackage();
+			new Empacotador(minificador, ".").gera();
+			List<File> arquivos = new Buscador(TEMP).buscaLocalmenteArquivosTerminadosEm(".css", ".js");
+			new Renomeador(TEMP, arquivos).renomeiaPackage();
 		}
 	}
-
-	private static String geraFingerprint(String destino, Buscador buscador,
+	
+	private static String geraFingerprint(String destino, String pasta,
 			Minificador minificador, VerificadorDeParametros parser) throws IOException {
 		if(parser.geraFingerprint()) {
 			if(parser.geraPackage()) {
-				Buscador raiz = new Buscador(".");
-				minificador.minificaLista(raiz.buscaLocalmenteArquivosTerminadosEm(".html", ".htm", ".css", ".js"));
+				List<File> arquivos = new Buscador(".").buscaLocalmenteArquivosTerminadosEm(".html", ".htm");
+				minificador.minificaLista(arquivos);
 			} else {
 				minificador.minifica();
 			}
-			Fingerprinter fingerprint = new Fingerprinter(buscador);
-			fingerprint.paraArquivos();
+			Fingerprinter fingerprint = new Fingerprinter(pasta);
+			List<File> arquivos = fingerprint.paraArquivos();
 			destino = fingerprint.para(destino);
 			if(parser.geraPackage()) {
-				new Renomeador(buscador, null).renomeiaPackage();
+				new Renomeador(pasta, arquivos).renomeiaPackage();
 			}
 		}
 		return destino;

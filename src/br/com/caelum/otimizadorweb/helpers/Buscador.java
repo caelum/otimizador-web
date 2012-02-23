@@ -25,7 +25,7 @@ public class Buscador {
 		return arquivos;
 	}
 	
-	public List<File> buscaNaPasta(String raiz, List<File> arquivos, String... exts) {
+	private List<File> buscaNaPasta(String raiz, List<File> arquivos, String... exts) {
 		for (File arquivo : new File(raiz).listFiles()) {
 			if(!arquivo.isDirectory() && !arquivo.getName().equals(pastaTemporaria)) {
 				for (String ext : exts) {
